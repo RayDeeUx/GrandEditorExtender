@@ -55,12 +55,15 @@ $on_mod(Loaded) {
 	// these patches sorta exist, i guess. apparently patching anything for DrawGridLayer breaks on windows
 	// either that, or TheSillyDoggo just took a lot of shortcuts to her approach.
 	// oh well.
+	// AS OF MARCH 25, 2025: COMMENTED OUT, BREAKS DRAWGRIDLAYER ON MACOS ARM (?)
+	/*
 	PATCH(0xda150, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
 	PATCH(0xda914, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
 	PATCH(0xdabcc, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
 	PATCH(0xdad60, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
 	PATCH(0xdae20, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
 	PATCH(0xdae64, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
+	*/
 
 	// unknown functions, but they have the same bytes as the previous ones
 	PATCH(0x394c0, patch_bytes);
