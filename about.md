@@ -1,10 +1,10 @@
 # GrandEditorExtender
 *Grand Midwife: I am the Grand Priestess!*\
 *Fry: Aren't you also the Grand Midwife?*\
-*Grand Midwife: And the Grand Lunch Lady. I work ~~five~~ six jobs; all grand.*
+*Grand Midwife: And the Grand Lunch Lady. I work ~~five~~ six jobs; all grand.*\
 <co>(Please go watch Futurama.)</c>
 
-Does exactly what you think this mod does.\
+Does exactly what you think this mod does: horizontally extend the level editor *really* far.\
 No frills, no softtoggles, no crashes, no fuss.\
 <cy>*Shh... it just works!*</c>
 
