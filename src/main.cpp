@@ -7,8 +7,8 @@ using namespace geode::prelude;
 
 // constexpr float max_object_position = 240000.0f; // = 0x486a6000 and 0x486a6780
 #define MAX_POSITIONS_AS_BYTEARRAYS\
-	constexpr float max_object_position = 999'999'999.0f;\
-	constexpr float max_camera_position = max_object_position + 30.0f;\
+	constexpr float max_object_position = 1'000'000'000.0f;\
+	constexpr float max_camera_position = 1'000'000'064.0f;\
 	std::vector patch_a = float_to_arr(max_object_position);\
 	std::vector patch_b = float_to_arr(max_camera_position);\
 
@@ -31,7 +31,17 @@ $on_mod(Loaded) {
 	// you probably shouldn't change it since it determines the float that gets loaded into the game
 	// yknow, the float that determines the maximum length of the level editor?
 	// yeah
-	std::vector<std::uint8_t> patch_bytes{0xc8, 0xcd, 0xa9, 0x72};
+	// std::vector<std::uint8_t> patch_bytes{0xc8, 0xcd, 0xa9, 0x72};
+
+	// Hello, hiimjasmine00 here. Since the float actually encompasses two instructions, we need to patch both of them.
+	// The maximum object position will be 0x4e6e6b28, and the maximum camera position will be 0x4e6e6b29.
+	// Also, some registers are different, so we need to change the first byte of the instruction to match the register.
+	std::vector<std::uint8_t> w8_patch_a{0x08, 0x65, 0x8d, 0x52, 0xc8, 0xcd, 0xa9, 0x72}; // 0x4e6e6b28
+	std::vector<std::uint8_t> w8_patch_b{0x28, 0x65, 0x8d, 0x52, 0xc8, 0xcd, 0xa9, 0x72}; // 0x4e6e6b29
+	std::vector<std::uint8_t> w9_patch_a{0x09, 0x65, 0x8d, 0x52, 0xc9, 0xcd, 0xa9, 0x72}; // 0x4e6e6b28
+	std::vector<std::uint8_t> w25_patch_a{0x19, 0x65, 0x8d, 0x52, 0xd9, 0xcd, 0xa9, 0x72}; // 0x4e6e6b28
+	std::vector<std::uint8_t> w27_patch_a{0x1b, 0x65, 0x8d, 0x52, 0xdb, 0xcd, 0xa9, 0x72}; // 0x4e6e6b28
+	// Alright, Jasmine out.
 
 	// for macOS ARM, you need to find ? f0 8c 52 ? 0d a9 72
 	// preferably use the `? 0d a9 72` search pattern to find all instances of 240000.0f
@@ -42,35 +52,35 @@ $on_mod(Loaded) {
 	48 0d a9 72  movk w8, #0x486a, LSL #16
 	*/
 
-	PATCH(0x2b32c, patch_bytes); // EditorUI::constrainGameLayerPosition => 0x4e6e6780
+	PATCH(0x2b328, w8_patch_b); // EditorUI::constrainGameLayerPosition => 0x4e6e6b29
 
 	/*
 	08 00 8c 52  mov  w8, #0x6000
 	48 0d a9 72  movk w8, #0x486a, LSL #16
 	*/
 
-	PATCH(0x3481c, patch_bytes);
-	PATCH(0x351cc, patch_bytes);
+	PATCH(0x34818, w8_patch_a);
+	PATCH(0x351c8, w8_patch_a);
 
 	// these patches sorta exist, i guess. apparently patching anything for DrawGridLayer breaks on windows
 	// either that, or TheSillyDoggo just took a lot of shortcuts to her approach.
 	// oh well.
-	// AS OF MARCH 25, 2025: COMMENTED OUT, BREAKS DRAWGRIDLAYER ON MACOS ARM (?)
-	/*
-	PATCH(0xda150, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
-	PATCH(0xda914, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
-	PATCH(0xdabcc, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
-	PATCH(0xdad60, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
-	PATCH(0xdae20, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
-	PATCH(0xdae64, patch_bytes); // DrawGridLayer::draw => 0x4e6e6780
-	*/
+	PATCH(0xda024, w25_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
+	PATCH(0xda14c, w8_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
+	PATCH(0xda910, w8_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
+	PATCH(0xdabc8, w8_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
+	PATCH(0xdad5c, w8_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
+	PATCH(0xdae1c, w8_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
+	PATCH(0xdae60, w8_patch_a); // DrawGridLayer::draw => 0x4e6e6b28
 
 	// unknown functions, but they have the same bytes as the previous ones
-	PATCH(0x394c0, patch_bytes);
-	PATCH(0x39a5c, patch_bytes);
-	PATCH(0x3e0e4, patch_bytes);
-	PATCH(0x462f8, patch_bytes);
-	PATCH(0x46a94, patch_bytes);
+	PATCH(0x394bc, w8_patch_a);
+	PATCH(0x39a58, w8_patch_a);
+	PATCH(0x3e0e0, w8_patch_a);
+	PATCH(0x43adc, w9_patch_a);
+	PATCH(0x462f4, w8_patch_a);
+	PATCH(0x467bc, w27_patch_a);
+	PATCH(0x46a90, w8_patch_a);
 	#elif defined(GEODE_IS_INTEL_MAC)
 	// for macOS Intel, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/8su33t.png [for 240030]
