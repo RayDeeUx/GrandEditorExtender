@@ -13,12 +13,12 @@ using namespace geode::prelude;
 	std::vector patch_b = float_to_arr(max_camera_position);\
 
 constexpr std::vector<std::uint8_t> float_to_arr(float x) {
-  union {
-	float a;
-	std::uint8_t b[4];
-  } y = {x};
+	union {
+		float a;
+		std::uint8_t b[4];
+	} y = {x};
 
-  return {y.b, y.b + 4};
+	return {y.b, y.b + 4};
 }
 
 $on_mod(Loaded) {
