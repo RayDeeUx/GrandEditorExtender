@@ -7,6 +7,10 @@ using namespace geode::prelude;
 
 // constexpr float maxObjPos = 240000.0f; // = 0x486a6000
 // constexpr float maxCamPos = 240030.0f; // = 0x486a6780
+
+// values determined by using qimiko's original 999'999'999.0f value
+// and then improving them using https://www.h-schmidt.net/FloatConverter/IEEE754.html
+// to avoid floating point precision loss
 #define MAX_POSITIONS_AS_BYTEARRAYS\
 	constexpr float maxObjPos = 1'000'000'000.0f;\
 	constexpr float maxCamPos = 1'000'000'064.0f;\
@@ -21,7 +25,6 @@ constexpr std::vector<std::uint8_t> floatToByteArray(float x) {
 		float a;
 		std::uint8_t b[4];
 	} y = {x};
-
 	return {y.b, y.b + 4};
 }
 
