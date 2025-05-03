@@ -161,39 +161,22 @@ $on_mod(Loaded) {
 
 	// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
 	PATCH(0x607ca4, cameraPosPatch);
-	#else
-	#warning Unsupported platform for this mod.
-	// I DO NOT GIVE CONSENT FOR THIS MOD TO BE PORTED TO IOS, FLERO CLIENT, OR SIMILAR.
-	// ANY ATTEMPT TO CONTACT ME FOR PERMISSION TO PORT THIS MOD TO IOS WILL BE SWIFTLY IGNORED.
-	// GO FIND THE ADDRESSES YOURSELVES, COWARDS.
-	// -RayDeeUx
-	geode::log::info("\n"
-	"UNSUPPORTED PLATFORM DETECTED, LOSER!\n"
-	"GRANDEDITOREXTENDER IS ILLEGITIMATE AND WILL NOT BE ALLOWED FOR USE ON IOS.\n"
-	"PLEASE DISABLE THE MOD TO CONTINUE WITH YOUR DAY."
-	"\n");
-	/*
+	#elif defined(GEODE_IS_IOS)
+	// Jasmine here again.
+	// iOS, despite being ARM, is a bit different from macOS ARM
+	// Instead of embedding the float into instructions, it is stored in data
+	// and loaded into the instruction. This means we need to patch the data instead of the instruction.
+	// Considering the nightmare that was the macOS ARM patching, this is a blessing.
+	// We need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f].
 
+	MAX_POSITIONS_AS_BYTEARRAYS
 
+	// EditorUI::getLimitedPosition, EditorUI::onCreateObject, DrawGridLayer::draw (uses 0x486a6000)
+	PATCH(0x63ccd8, objPosPatch);
 
+	// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
+	PATCH(0x63dbf0, cameraPosPatch);
 
-           SSNNNNNNNNNSS          NSSSNNSSSSSSN          SSNSSNNNSSSSSS                         SSNSNNNNSSS                                                                                                                                                                                                                                                                                        NNNNNNNNNN
-        NNNSSXX     XXSSSSN    NSSSSXXXXXXXXSSSSSSNS  SNSSSXXXXXXXXXXSSSSSSSN               SNNSSXXXXXXXXSSSSSNS                                                                        SNNSSS                                                                                                                        SS                  SSSSSN                                                 NSSXXX    XSN
-       NNX               XSN  SSX                XXNSSNSX                 SNN               NSX               XNNN   NNNNNNNNNNNNNNNNSS SNNNNNNNNNNNNNNNNNNSS NNNNNNNNNNNNNNNNN     SNNNSSSSSNNNSN    NNNNNNNNNNNNNNNNNNSS SSNNNNNNNNNNNNNNN   NNNNNNNNNNNNSS                               NNNNNNNNNN           NNNNSSSSSNNN          NNNSSSSSSNNNS     NNNNNNNNNNNNNNSS   SNNNNNNNNNNNNNNN     NX        XSN
-     NNSX           XX     SNSNSX         XXXXX    XNSNS            XXXXXXSNSS              NSX           X     SSN NNXX           XXXSNSSX               XNSNSX            XXSSN NNSX         XXSNNSNSX               XSSNSSX            XXSNNSX         XXSSNN                           NSX      XSN      SSNSXX         XSNNN  NNSXX          XXSSNNSXX           XXXSNNSX            XXSNN  NX        XSS
-    NNN           SNNNNX   XSNNS         XNNNNNSX   SNNS           NNNNNNNNSS               NSX         XNNNSX   XSNSS           XX   SNSX                XNNNX           XX  XSNNS               XSNNS                 SSNS           XX  XSNNX              XSNN                        NSX       XSN     SNS                SSSSSS                XSNS           XX  XSNNX           XX   XSN S        XSN
-    NSS          XSNS NNX  XSNNS         XNNNNNS    NNNX           SNNSSS N                 NSX         XSSSNNX   SNNS         XSNNNNNNSNNNNNX        SNNNNSNNX        XSNNNNNNNNS         XNNNS   XSNSNNNSX       XNNNNNSNS         XNNNNNNNNNX        SNNSX  XSN                        NX        XSN     NSX     XSNNSX      SNNSX          XNNNSSNNNS         XNNSSNNSSNX        SNSNNSX  XNSNX       XSN
-    NSX          SNN   NNNNNSSNS           XXX    XNNSNX            XXXXSN                  NSX         XSSSNSS   XNNS         XSNNNNSSS  SSNX       XSNSSSSSNX         XSSSNNNNNX        XSNSSNSXXSSNS  NSX       SNSS  SNS          SSSNNN SNX       XSNSNNX  XNN                       NX        XSN    NSS      XNSSNS      XSNNX           XSSNSSSNS         XSSNNNNNSNX        XSNNSS   XNSNX       SSS
-    NSX          SNN   NSNSSNSNX                  XNNSNS                XNSS                NSX         SSSSNSS   XNNS              XNN    NNX       XNNS   SSX              SNSN         XSNS   NSSSS   NSX      XSNS    NS              XSSSNX       XSNS NX  XSN                       NXX       XSN    NSX     XSN  NSX     XSNNNX             XNNSNS              XNSSNX                XSNSNX       SN
-    NSS          XSN  SNX  XSNNS         XSNSNNSX   SNNX           XSSSNNNSS                NSX         XSNSNNX   SNNS          XSSSSNSS   NNX       XSNS   SSX         XSSSSNNSN         XNN  JNSSNNN   NSX       SNS    NS          XSSSSNSSNX       XSNS NX  XSN                       NXX       XSN    NSX      XNS NSX     XSNSNSSSX            NNNS          SSSSNNSSNX              XSNNSSNSX      SN
-     NNX          XNNNSX   XSNNS         XNNNSNNX   XNNS          XNSSSSSS                  NSX         XSNSSX   XSNNS         SNNSNSNSS   NNX       XNNS   SNX        XSNNSSSSNNX         SNNNNX  XSN   NSX       SNS    NS         XNNSSNSSSNX        SNSNS   XNNNSSSSN                 NSX       XSNNSSSNNS      XSNNNX      SSNNSSNNNS           SNNS         XNNSSNSSSNX        XX     XSNS  NSXXXXXSNSS
-     SSNX                 XSNSNS          XSSSXX    SNNS          XNSS                      NSX                 XNNSSS          SNNNSSNN   NNX       XSNS   SNX          SNNNSSNNNX         XSXX   SNSS  NSX      XSNS    NS          XSNNSSNNNX         XX    XNNNX   XSN                NSX        XSSSSSSNSX       XXX      XSNNSX XSSX           SNNS          SNNNSSNNNX       XSNS      SN   NNNNNNNNN
-       NNSX             XXSNSSNSX                 XSNNNSX         XNNS                      NSX              XSNNSSSSS                SNN  NNX       XSNS    NS               XSNSNSX            XSNSS   NSX      XSNS    NSX               SNNX             XSNNNS     SN                NSX              SNNNSX            XSNSSNNX              XSNSNS                SNNX       XSNSX     XSN NSX     XSN
-         NNSSXXXXXXXXXSSNNSS   NSSSSXXXXXXXXXXSSSNNSSSSSSSXXXXXXXSNSSS                       NNSSSXXXXXXXSSSSNSSSSS NNSSSXXXXXXXXXXSSSNSS  NNNSXXXXXSNNSS    NNSSXXXXXXXXXXSSSSNS  NNSSXXXXXXXXSSNSSS     NSSXXXXXSNSS    SNSSSXXXXXXXXXXSSSNSNSSSXXXXXXXSSSNNSSSSNSX  XSNS                NSSXXXXXXXXXSSSSNSSNSNSSXXXXXXXXSSNSSSS NNNSSXXXXXXXXXSSNSSSNNSSSXXXXXXXXXSSSSNSNSSXXXXXSSNNNSXXXXXSNS NSXX   XSNSS
-            SSSNNNNNNSSSSS        SSSSSSSSSSSSSS         SSSSSSSSSSS                            SSSSNSSNSSSSSS         SSSSNSSNSSSSSSSSS      SSSSNSSSSS        SSSSNSSSSSSSSSSS      SSSNNNNSSSSS          SSSSSSSS          SSSSSSSSSSSSS      SSSSSSSSSSSS      N  XSNS                    SSSSSSSSSSSSS        SSNNNNSSSSS          SNNNNNNSSSSS      SSSSSSSSSSSSSSS     SSSSSSS     SSSSSS    NNNNNNSSS
-                                                                                                                                                                                                                                                                   NSSNSSS                                                                                                                           SSSSSSS
-
-
-	*/
+	// Alright, Jasmine out.
 	#endif
 }
