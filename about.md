@@ -8,8 +8,8 @@ Does exactly what you think this mod does: horizontally extend the level editor 
 No frills, no softtoggles, no crashes, no fuss.\
 <cy>*Shh... it just works!*</c>
 
-<c-ff0000>None of the developers of GrandEditorExtender can be held responsible for objects being placed at inaccurate positions.</c> <c-ffff00>This is an issue as old as time. The "solution" to this "problem" is by inventing quadruple-precision floating-point numbers, or finding something better to do with your time (such as hiring a level merger to do the dirty work for you).</c>
+<c-ff0000>None of the developers of GrandEditorExtender can be held responsible for objects being placed at inaccurate positions.</c> <c-ffff00>This is an issue as old as time. The "solution" to this "problem" is by inventing octuple-precision floating-point numbers, or finding something better to do with your time (such as hiring a level merger to do the dirty work for you).</c>
 
-Huge thank you to [zmx](https://github.com/qimiko) for writing the byte address patching logic for macOS, and to [hiimjasmine00](https://github.com/hiimjasmine00) for fixing some quirks from the bytepatches!
+Huge thank you to [zmx](https://github.com/qimiko) for writing the byte address patching logic for macOS, and to [hiimjasmine00](https://github.com/hiimjasmine00) for fixing some quirks from the bytepatches and writing the byte patching logic for iOS!
 
 This [Geode mod](https://geode-sdk.org) is licensed under LGPLv2. To report bugs or get help with using my mods, press the Discord button in the lower left corner.
