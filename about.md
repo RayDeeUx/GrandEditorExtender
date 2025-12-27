@@ -12,4 +12,6 @@ No frills, no softtoggles, no crashes, no fuss.\
 
 Huge thank you to [zmx](https://github.com/qimiko) for writing the byte address patching logic for macOS, and to [hiimjasmine00](https://github.com/hiimjasmine00) for fixing some quirks from the bytepatches and writing the byte patching logic for iOS!
 
+Also check out [a more flexible approach](mod:alphalaneous.editor_extender_extreme) by Alphalaneous!
+
 This [Geode mod](https://geode-sdk.org) is licensed under LGPLv2. To report bugs or get help with using my mods, press the Discord button in the lower left corner.
