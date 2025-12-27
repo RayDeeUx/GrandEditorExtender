@@ -109,7 +109,7 @@ $on_mod(Loaded) {
 	// for macOS Intel, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/8su33t.png [for 240030]
 	// and https://files.catbox.moe/rzpj6t.png [for 240000]
-	// EditorUI::getGroupCenter UPDATE: also find 999999.f and -999999.f!
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f!
 	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
@@ -131,7 +131,7 @@ $on_mod(Loaded) {
 	// for Android 64-bit, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/3796mo.png [for 240030]
 	// and https://files.catbox.moe/ujja7q.png [for 240000]
-	// EditorUI::getGroupCenter UPDATE: also find 999999.f and -999999.f!
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f!
 	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
@@ -154,7 +154,7 @@ $on_mod(Loaded) {
 	// for Android 32-bit, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/bnztgs.png [for 240030]
 	// and https://files.catbox.moe/tfgebw.png [for 240000]
-	// EditorUI::getGroupCenter UPDATE: also find 999999.f and -999999.f!
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f!
 	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
