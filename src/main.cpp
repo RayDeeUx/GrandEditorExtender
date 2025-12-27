@@ -92,6 +92,15 @@ $on_mod(Loaded) {
 	PATCH(0x462f4, w8_objPosPatch);
 	PATCH(0x467bc, w27_objPosPatch);
 	PATCH(0x46a90, w8_objPosPatch);
+
+	// EditorUI::getGroupCenter => 0x4e6e6b28
+	std::vector<std::uint8_t> w8_maxCtrPosPatch{0x08, 0x65, 0x8d, 0x52, 0xc8, 0xcd, 0xa9, 0x72}; // 0x4e6e6b28
+	/*
+	08 7e 84 52		mov		w8, #0x23f0
+	88 2e a9 72		movk	w8, #0x4974, LSL #16
+	*/
+	PATCH(0x36ed4, w8_maxCtrPosPatch);
+	PATCH(0x36fd8, w8_maxCtrPosPatch);
 	#elif defined(GEODE_IS_INTEL_MAC)
 	// for macOS Intel, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/8su33t.png [for 240030]
