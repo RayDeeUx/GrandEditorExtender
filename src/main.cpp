@@ -58,6 +58,10 @@ $on_mod(Loaded) {
 	// preferably use the `? 0d a9 72` search pattern to find all instances of 240000.0f
 	// addresses based on https://files.catbox.moe/wvfp8j.png [this search pattern accomodates both floats]
 
+	// Ghidra 12.0 update: searching for the ARM instructions from Program Text instead (Cmd + F)
+	// then check instructions in https://xfreetool.com/en/armconverter
+	// also patch from the address that has the `mov [register], #0x[MEMY]` instruction
+
 	/*
 	08 f0 8c 52  mov  w8, #0x6780
 	48 0d a9 72  movk w8, #0x486a, LSL #16
