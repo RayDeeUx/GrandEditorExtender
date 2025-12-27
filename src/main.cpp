@@ -7,6 +7,7 @@ using namespace geode::prelude;
 
 // constexpr float maxObjPos = 240000.0f; // = 0x486a6000
 // constexpr float maxCamPos = 240030.0f; // = 0x486a6780
+// constexpr float maxCtrPos = 999999.0f; // = 0x497423f0
 
 // values determined by using qimiko's original 999'999'999.0f value
 // and then improving them using https://www.h-schmidt.net/FloatConverter/IEEE754.html
@@ -14,8 +15,10 @@ using namespace geode::prelude;
 #define MAX_POSITIONS_AS_BYTEARRAYS\
 	constexpr float maxObjPos = 1'000'000'000.0f;\
 	constexpr float maxCamPos = 1'000'000'064.0f;\
+	constexpr float maxCtrPos = 1'000'000'000.0f;\
 	std::vector objPosPatch = floatToByteArray(maxObjPos);\
 	std::vector cameraPosPatch = floatToByteArray(maxCamPos);\
+	std::vector maxCtrPosPatch = floatToByteArray(maxCtrPos);
 	
 #define ANDROID64_BASE 0x100000
 #define ANDROID32_BASE 0x10000
@@ -93,6 +96,8 @@ $on_mod(Loaded) {
 	// for macOS Intel, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/8su33t.png [for 240030]
 	// and https://files.catbox.moe/rzpj6t.png [for 240000]
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f and -999999.f!
+	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
 
@@ -104,10 +109,17 @@ $on_mod(Loaded) {
 
 	// a weird one
 	PATCH(0x7fe110, objPosPatch);
+
+	// max object center (used in EditorUI::getGroupCenter)
+	PATCH(0x7fe074, maxCtrPosPatch);
+	PATCH(0x7fe120, maxCtrPosPatch);
+	PATCH(0x7fe124, maxCtrPosPatch);
 	#elif defined(GEODE_IS_ANDROID64)
 	// for Android 64-bit, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/3796mo.png [for 240030]
 	// and https://files.catbox.moe/ujja7q.png [for 240000]
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f and -999999.f!
+	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
 
@@ -122,10 +134,15 @@ $on_mod(Loaded) {
 
 	// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
 	PATCH(0x77790c - ANDROID64_BASE, cameraPosPatch);
+
+	// EditorUI::getGroupCenter (uses 0x497423f0)
+	PATCH(0x778034 - ANDROID64_BASE, maxCtrPosPatch);
 	#elif defined(GEODE_IS_ANDROID32)
 	// for Android 32-bit, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/bnztgs.png [for 240030]
 	// and https://files.catbox.moe/tfgebw.png [for 240000]
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f and -999999.f!
+	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
 
@@ -143,10 +160,15 @@ $on_mod(Loaded) {
 
 	// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
 	PATCH(0x382f7c - ANDROID32_BASE, cameraPosPatch);
+
+	// EditorUI::getGroupCenter (uses 0x497423f0)
+	PATCH(0x383474 - ANDROID32_BASE, maxCtrPosPatch);
 	#elif defined(GEODE_IS_WINDOWS)
 	// for Windows, you need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f]
 	// addresses based on https://files.catbox.moe/joabt9.png [for 240030]
 	// and https://files.catbox.moe/pjzqho.png [for 240000]
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f!
+	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
 
@@ -161,6 +183,9 @@ $on_mod(Loaded) {
 
 	// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
 	PATCH(0x607ca4, cameraPosPatch);
+
+	// EditorUI::getGroupCenter (uses 0x497423f0)
+	PATCH(0x607cbc, maxCtrPosPatch);
 	#elif defined(GEODE_IS_IOS)
 	// Jasmine here again.
 	// iOS, despite being ARM, is a bit different from macOS ARM
@@ -168,6 +193,8 @@ $on_mod(Loaded) {
 	// and loaded into the instruction. This means we need to patch the data instead of the instruction.
 	// Considering the nightmare that was the macOS ARM patching, this is a blessing.
 	// We need to find 0x486a6780 [240030.0f] and 0x486a6000 [240000.0f].
+	// EditorUI::getGroupCenter UPDATE: also find 999999.f!
+	// in Ghidra 12.0 and newer, just type the floats in manually.
 
 	MAX_POSITIONS_AS_BYTEARRAYS
 
@@ -176,6 +203,9 @@ $on_mod(Loaded) {
 
 	// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
 	PATCH(0x63dbf0, cameraPosPatch);
+
+	// EditorUI::getGroupCenter (uses 0x497423f0)
+	PATCH(0x63dbf8, maxCtrPosPatch);
 
 	// Alright, Jasmine out.
 	#endif
