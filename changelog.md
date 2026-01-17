@@ -1,4 +1,6 @@
 # GrandEditorExtender Changelog
+## v1.0.3
+- *Actually* make the mod work on JIT-less iOS this time.
 ## v1.0.2
 - It was recently discovered that RobTop made the incredibly short-sighted decision to limit object transform controls to 1000000 units.
   - This update aims to fix that. (Additional emphasis on *"aims"*.)

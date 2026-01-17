@@ -200,6 +200,23 @@ $on_mod(Loaded) {
 	// EditorUI::getGroupCenter (uses 0x497423f0)
 	PATCH(0x607cbc, maxCtrPosPatch);
 	#elif defined(GEODE_IS_IOS)
+	// Ery here.
+	// I hate catering to JIT-less iOS.
+	// Also, fuck Alan Dye for ruining any dignity that was left in macOS/iOS UI and UX.
+	// Anyway.
+
+	if (Loader::get()->isPatchless()) {
+		// EditorUI::getLimitedPosition, EditorUI::onCreateObject, DrawGridLayer::draw (uses 0x486a6000)
+		GEODE_MOD_STATIC_PATCH(0x63ccd8, { 0x28, 0x6B, 0x6E, 0x4E });
+
+		// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
+		GEODE_MOD_STATIC_PATCH(0x63dbf0, { 0x29, 0x6B, 0x6E, 0x4E });
+
+		// EditorUI::getGroupCenter (uses 0x497423f0)
+		GEODE_MOD_STATIC_PATCH(0x63dbf8, { 0x28, 0x6B, 0x6E, 0x4E });
+		return;
+	}
+
 	// Jasmine here again.
 	// iOS, despite being ARM, is a bit different from macOS ARM
 	// Instead of embedding the float into instructions, it is stored in data
