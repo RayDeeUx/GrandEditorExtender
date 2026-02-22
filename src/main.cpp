@@ -209,13 +209,13 @@ $on_mod(Loaded) {
 
 	if (Loader::get()->isPatchless()) {
 		// EditorUI::getLimitedPosition, EditorUI::onCreateObject, DrawGridLayer::draw (uses 0x486a6000)
-		GEODE_MOD_STATIC_PATCH(0x63ccd8, { 0x28, 0x6B, 0x6E, 0x4E });
+		GEODE_MOD_STATIC_PATCH(0x6455c4, { 0x28, 0x6B, 0x6E, 0x4E });
 
 		// EditorUI::constrainGameLayerPosition (uses 0x486a6780)
-		GEODE_MOD_STATIC_PATCH(0x63dbf0, { 0x29, 0x6B, 0x6E, 0x4E });
+		GEODE_MOD_STATIC_PATCH(0x6462c0, { 0x29, 0x6B, 0x6E, 0x4E });
 
 		// EditorUI::getGroupCenter (uses 0x497423f0)
-		GEODE_MOD_STATIC_PATCH(0x63dbf8, { 0x28, 0x6B, 0x6E, 0x4E });
+		GEODE_MOD_STATIC_PATCH(0x6462c8, { 0x28, 0x6B, 0x6E, 0x4E });
 		return;
 	}
 	// Ery out.
