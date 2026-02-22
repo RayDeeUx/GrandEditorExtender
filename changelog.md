@@ -1,4 +1,6 @@
 # GrandEditorExtender Changelog
+## v1.0.4
+- Port to GD 2.2081.
 ## v1.0.3
 - *Actually* make the mod work on JIT-less iOS this time.
 ## v1.0.2
