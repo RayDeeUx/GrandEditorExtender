@@ -6,7 +6,6 @@
 		"ios": "2.2081",
 		"android": "2.2081"
 	},
-	"requires-patching": true,
 	"id": "raydeeux.grandeditorextension",
 	"name": "GrandEditorExtender",
 	"version": "v1.0.4",
